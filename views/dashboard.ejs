@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h2>Welcome to your Dashboard</h2>
+  <a href="/logout">Logout</a>
+  <h3>Search Trains</h3>
+  <form action="/search" method="GET">
+    <input name="from" placeholder="From" required />
+    <input name="to" placeholder="To" required />
+    <button type="submit">Search</button>
+  </form>
+
+  <h3>Your Bookings</h3>
+  <% if (tickets.length === 0) { %>
+    <p>No bookings yet.</p>
+  <% } else { %>
+    <ul>
+      <% tickets.forEach(ticket => { %>
+        <li>
+          Train: <%= ticket.trainId.name %> | 
+          From: <%= ticket.trainId.from %> → To: <%= ticket.trainId.to %> | 
+          Date: <%= ticket.trainId.date.toDateString() %>
+        </li>
+      <% }); %>
+    </ul>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Available Trains</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h2>Available Trains</h2>
+  <a href="/dashboard">⬅ Back to Dashboard</a>
+
+  <% if (trains.length === 0) { %>
+    <p>No trains found for this route.</p>
+  <% } else { %>
+    <ul>
+      <% trains.forEach(train => { %>
+        <li>
+          <strong><%= train.trainName %></strong> (<%= train.trainNumber %>) |
+          <%= train.from %> → <%= train.to %> |
+          Date: <%= train.date.toDateString() %> |
+          Time: <%= train.departureTime %> |
+          Fare: ₹<%= train.fare %> |
+          Available Seats: <%= train.availableSeats %>
+
+          <% if (train.availableSeats > 0) { %>
+            <form action="/book" method="POST" style="display:inline;">
+              <input type="hidden" name="trainId" value="<%= train._id %>">
+              <button type="submit">Book</button>
+            </form>
+          <% } else { %>
+            <button onclick="alert('No available seats!')" style="color: gray;" disabled>Book</button>
+            <span style="color:red;"> (Full)</span>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</body>
+</html>
