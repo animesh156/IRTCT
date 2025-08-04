@@ -25,3 +25,30 @@ exports.getTickets = async (req, res) => {
   const tickets = await Ticket.find({ userId: req.session.userId }).populate("trainId");
   res.render("dashboard", { tickets });
 };
+
+
+
+exports.cancelTicket = async (req, res) => {
+  try {
+    const { ticketId } = req.body;
+
+    // Find ticket
+    const ticket = await Ticket.findById(ticketId);
+    if (!ticket) return res.status(404).send("Ticket not found");
+
+    // Increment availableSeats
+    const train = await Train.findById(ticket.trainId);
+    if (train) {
+      train.availableSeats++;
+      await train.save();
+    }
+
+    // Delete the ticket
+    await Ticket.findByIdAndDelete(ticketId);
+
+    res.redirect("/dashboard");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error cancelling ticket");
+  }
+};

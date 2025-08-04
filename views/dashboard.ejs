@@ -7,6 +7,7 @@
 <body>
   <h2>Welcome to your Dashboard</h2>
   <a href="/logout">Logout</a>
+
   <h3>Search Trains</h3>
   <form action="/search" method="GET">
     <input name="from" placeholder="From" required />
@@ -21,9 +22,17 @@
     <ul>
       <% tickets.forEach(ticket => { %>
         <li>
-          Train: <%= ticket.trainId.name %> | 
+          Train: <%= ticket.trainId.trainName %> | 
           From: <%= ticket.trainId.from %> → To: <%= ticket.trainId.to %> | 
           Date: <%= ticket.trainId.date.toDateString() %>
+
+         <form action="/cancel" method="POST" style="display:inline;">
+  <input type="hidden" name="ticketId" value="<%= ticket._id %>">
+  <button type="submit" class="cancel-btn" onclick="return confirm('Are you sure you want to cancel this ticket?')">
+    Cancel
+  </button>
+</form>
+
         </li>
       <% }); %>
     </ul>
